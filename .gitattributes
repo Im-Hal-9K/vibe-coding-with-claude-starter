@@ -1,0 +1,4 @@
+# Keep shell scripts LF so they run in the Linux Codespace regardless of the
+# committer's OS (CRLF would break the #! shebang line).
+* text=auto eol=lf
+*.sh text eol=lf
