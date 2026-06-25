@@ -1,0 +1,39 @@
+// Vibe Coding with Claude - student Codespace.
+// Everything runs in the browser. A student opens this repo in a Codespace and
+// the Claude tooling + a live preview are ready. No installs on their machine.
+{
+  "name": "Vibe Coding with Claude",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:20",
+
+  // Live preview of whatever the student builds (Claude usually serves on one of these).
+  "forwardPorts": [3000, 5500, 8080],
+  "portsAttributes": {
+    "3000": { "label": "Preview", "onAutoForward": "openPreview" },
+    "5500": { "label": "Live Server" },
+    "8080": { "label": "Preview alt" }
+  },
+
+  // Install the Claude Code CLI (works in the integrated terminal: run `claude`)
+  // and a tiny static server for instant previews of HTML projects.
+  "postCreateCommand": "npm install -g @anthropic-ai/claude-code serve",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // VERIFY this id at the dry run; if the panel extension differs, the CLI
+        // (`claude` in the terminal) is the reliable fallback and needs no extension.
+        "anthropic.claude-code",
+        "ms-vscode.live-server"
+      ]
+    }
+  },
+
+  // ---- API KEY WIRING: Option A (proxy), token pasted in class ----
+  // The proxy URL below is public/non-secret. Claude routes all calls through the
+  // class proxy. Students paste the throwaway class token ONCE when `claude` asks
+  // for a key (instructor shows it on screen). That token is capped by the proxy's
+  // spend-limited key and revoked after class. No live credential is committed here.
+  "remoteEnv": {
+    "ANTHROPIC_BASE_URL": "https://vibe-class-claude-proxy.hfgott0.workers.dev"
+  }
+}
