@@ -13,9 +13,10 @@
     "8080": { "label": "Preview alt" }
   },
 
-  // Install the Claude Code CLI (works in the integrated terminal: run `claude`)
-  // and a tiny static server for instant previews of HTML projects.
-  "postCreateCommand": "npm install -g @anthropic-ai/claude-code serve",
+  // Installs the Claude Code CLI + a preview server AND pre-answers Claude's
+  // first-run prompts (theme, onboarding, folder trust) so students land
+  // straight in the REPL. See .devcontainer/setup.sh.
+  "postCreateCommand": "bash .devcontainer/setup.sh",
 
   "customizations": {
     "vscode": {
@@ -28,12 +29,17 @@
     }
   },
 
-  // ---- API KEY WIRING: Option A (proxy), token pasted in class ----
+  // ---- API KEY WIRING: proxy, key pasted in class (no secret committed) ----
   // The proxy URL below is public/non-secret. Claude routes all calls through the
-  // class proxy. Students paste the throwaway class token ONCE when `claude` asks
-  // for a key (instructor shows it on screen). That token is capped by the proxy's
-  // spend-limited key and revoked after class. No live credential is committed here.
+  // class proxy. Students set the throwaway class key once per session with
+  //   export ANTHROPIC_API_KEY=<key the instructor shows on screen>
+  // (see README step 2), then run `claude`. The key is capped by the proxy's
+  // spend-limited Anthropic key and revoked after class. No credential lives here.
   "remoteEnv": {
-    "ANTHROPIC_BASE_URL": "https://vibe-class-claude-proxy.hfgott0.workers.dev"
+    "ANTHROPIC_BASE_URL": "https://vibe-class-claude-proxy.hfgott0.workers.dev",
+    // Pin to the model the class key is cleared for, so no student hits a
+    // model-not-found error. Both the main and background models use it.
+    "ANTHROPIC_MODEL": "claude-haiku-4-5-20251001",
+    "ANTHROPIC_SMALL_FAST_MODEL": "claude-haiku-4-5-20251001"
   }
 }
